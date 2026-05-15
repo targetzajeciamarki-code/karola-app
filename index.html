@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karola – Twoja asystentka angielskiego</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-mid: #243460;
+    --yellow: #F5C842;
+    --yellow-light: #FDE97A;
+    --terra: #C45A38;
+    --terra-light: #E07A5A;
+    --cream: #FDF8F0;
+    --white: #ffffff;
+    --text-dark: #1a2744;
+    --text-mid: #3d4f7c;
+    --text-light: #8899bb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+    padding: 48px 24px 56px;
+    text-align: center;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(245,200,66,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(196,90,56,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,200,66,0.12);
+    border: 1px solid rgba(245,200,66,0.3);
+    border-radius: 99px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--yellow);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 10vw, 72px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.0;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--yellow); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 340px;
+    margin: 0 auto 12px;
+    line-height: 1.6;
+  }
+
+  .hero-by {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.5px;
+  }
+
+  .hero-by a {
+    color: var(--yellow);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  .chat-wrap {
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: 0 4px 40px rgba(26,39,68,0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .chat-header {
+    background: var(--navy);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--yellow), var(--terra));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .chat-header-info h3 { color: var(--white); font-size: 15px; font-weight: 600; }
+  .chat-header-info p { color: rgba(255,255,255,0.5); font-size: 12px; }
+
+  .online-dot {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .messages {
+    padding: 20px;
+    min-height: 120px;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-thumb { background: rgba(26,39,68,0.15); border-radius: 2px; }
+
+  .msg {
+    display: flex;
+    gap: 10px;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--yellow), var(--terra));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .msg.user .msg-avatar {
+    background: var(--navy);
+    color: var(--yellow);
+    font-size: 11px;
+  }
+
+  .msg-bubble {
+    max-width: 80%;
+    background: var(--cream);
+    border-radius: 18px 18px 18px 4px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-dark);
+  }
+
+  .msg.user .msg-bubble {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 18px 18px 4px 18px;
+  }
+
+  .msg-bubble strong { color: var(--terra); font-weight: 600; }
+  .msg.user .msg-bubble strong { color: var(--yellow); }
+
+  .msg-bubble .eng-example {
+    display: block;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(26,39,68,0.06);
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  .typing {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 14px 18px;
+  }
+
+  .typing span {
+    width: 7px; height: 7px;
+    background: var(--text-light);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
+
+  .input-area {
+    border-top: 1px solid rgba(26,39,68,0.08);
+    padding: 16px 20px;
+  }
+
+  .input-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  textarea {
+    flex: 1;
+    border: 2px solid rgba(26,39,68,0.12);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--cream);
+    resize: none;
+    outline: none;
+    min-height: 48px;
+    max-height: 120px;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+
+  textarea:focus { border-color: var(--yellow); background: var(--white); }
+  textarea::placeholder { color: var(--text-light); }
+
+  .send-btn {
+    width: 48px; height: 48px;
+    background: var(--navy);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .send-btn:hover { background: var(--terra); transform: translateY(-1px); }
+  .send-btn svg { width: 20px; height: 20px; fill: var(--yellow); }
+  .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .suggestions { margin-bottom: 20px; }
+
+  .suggestions-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    padding: 0 4px;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .chip {
+    background: var(--white);
+    border: 1.5px solid rgba(26,39,68,0.12);
+    border-radius: 99px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .chip:hover {
+    border-color: var(--yellow);
+    background: rgba(245,200,66,0.08);
+    color: var(--navy);
+  }
+
+  .email-section {
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: 0 4px 40px rgba(26,39,68,0.1);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    display: none;
+    animation: fadeUp 0.5s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .email-section.visible { display: block; }
+
+  .email-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .email-section p {
+    font-size: 14px;
+    color: var(--text-mid);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .email-section p em {
+    color: var(--terra);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .email-field { display: flex; flex-direction: column; gap: 10px; }
+
+  .email-field input[type="text"],
+  .email-field input[type="email"] {
+    border: 2px solid rgba(26,39,68,0.12);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .email-field input:focus { border-color: var(--yellow); background: var(--white); }
+
+  .email-btn {
+    background: var(--yellow);
+    color: var(--navy);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+
+  .email-btn:hover {
+    background: var(--yellow-light);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(245,200,66,0.3);
+  }
+
+  .email-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .email-note {
+    font-size: 11px;
+    color: var(--text-light);
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .cta-section {
+    background: var(--navy);
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: center;
+    display: none;
+    animation: fadeUp 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(245,200,66,0.15), transparent 70%);
+    border-radius: 50%;
+  }
+
+  .cta-section.visible { display: block; }
+
+  .cta-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .cta-section p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: block;
+    background: var(--yellow);
+    color: var(--navy);
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+  }
+
+  .cta-btn:hover {
+    background: var(--yellow-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(245,200,66,0.3);
+  }
+
+  .cta-ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .cta-ig:hover { color: var(--yellow); }
+
+  .cta-ig-icon {
+    width: 20px; height: 20px;
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cta-ig-icon svg { width: 12px; height: 12px; fill: white; }
+
+  .error-msg { font-size: 13px; color: var(--terra); margin-top: 6px; display: none; }
+  .success-msg { font-size: 13px; color: #4ade80; margin-top: 6px; display: none; text-align: center; }
+
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .footer a { color: var(--terra); text-decoration: none; }
+
+  .reset-btn {
+    display: none;
+    background: none;
+    border: 1.5px solid rgba(26,39,68,0.15);
+    border-radius: 99px;
+    padding: 7px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+
+  .reset-btn:hover { border-color: var(--terra); color: var(--terra); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">✦ Bezpłatna asystentka ✦</div>
+  <h1>Poznaj <span>Karolę</span></h1>
+  <p class="hero-sub">Twoją osobistą asystentkę angielskiego — zawsze po Twojej stronie.</p>
+  <p class="hero-by">od <a href="https://instagram.com/angielski_z_targetem" target="_blank">@angielski_z_targetem</a></p>
+</div>
+
+<div class="app-container">
+
+  <div class="suggestions" id="suggestions">
+    <div class="suggestions-label">Przykładowe problemy 👇</div>
+    <div class="chips">
+      <div class="chip" onclick="fillChip(this)">Nic nie zrobiłam z angielskim od tygodnia 😬</div>
+      <div class="chip" onclick="fillChip(this)">Boję się mówić po angielsku w pracy</div>
+      <div class="chip" onclick="fillChip(this)">Nie wiem jak powiedzieć "przepraszam za opóźnienie"</div>
+      <div class="chip" onclick="fillChip(this)">Uczę się od lat i ciągle czuję, że nie robię postępów</div>
+    </div>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="chat-header">
+      <div class="avatar">K</div>
+      <div class="chat-header-info">
+        <h3>Karola</h3>
+        <p><span class="online-dot"></span>Asystentka angielskiego • Target</p>
+      </div>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="msg karola">
+        <div class="msg-avatar">K</div>
+        <div class="msg-bubble">
+          Cześć! Jestem <strong>Karola</strong> — Twoja asystentka angielskiego 🙋‍♀️<br><br>
+          Napisz mi, co Cię blokuje, czego się boisz albo czego po prostu nie możesz ogarnąć z angielskim. Bez oceniania, obiecuję.
+          <span class="eng-example">✦ "Every expert was once a beginner." — Pamiętaj o tym!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-label">Twój problem / pytanie</div>
+      <div class="input-row">
+        <textarea id="userInput" placeholder="Np. Nie wiem jak powiedzieć... / Boję się mówić po angielsku w pracy..." rows="2"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <button class="reset-btn" id="resetBtn" onclick="resetChat()">↺ Zacznij od nowa</button>
+    </div>
+  </div>
+
+  <div class="email-section" id="emailSection">
+    <h3>Chcesz więcej wskazówek?</h3>
+    <p>Zapisz się i dostawaj od Karoli <em>darmowe ćwiczenia, porady i motywację</em> prosto na maila — raz w tygodniu, bez spamu.</p>
+    <div class="email-field">
+      <input type="text" id="nameInput" placeholder="Twoje imię" />
+      <input type="email" id="emailInput" placeholder="Twój adres e-mail" />
+      <button class="email-btn" id="emailBtn" onclick="submitEmail()">✉️ Dołącz do listy Karoli!</button>
+    </div>
+    <div class="error-msg" id="errorMsg">Podaj poprawny adres e-mail 🙏</div>
+    <div class="success-msg" id="successMsg">🎉 Jesteś już na liście! Sprawdź maila.</div>
+    <p class="email-note">Żadnego spamu. Możesz się wypisać w każdej chwili.</p>
+  </div>
+
+  <div class="cta-section" id="ctaSection">
+    <h3>Gotowa na prawdziwy przełom?</h3>
+    <p>Umów bezpłatną konsultację i sprawdź, jak mogę pomóc Ci zacząć mówić po angielsku z pewnością siebie — już teraz.</p>
+    <a href="https://calendly.com/target-zajeciamarki/konsultacja-jezyk-angielski" target="_blank" class="cta-btn">
+      📅 Umów bezpłatną konsultację
+    </a>
+    <a href="https://instagram.com/angielski_z_targetem" target="_blank" class="cta-ig">
+      <span class="cta-ig-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </span>
+      @angielski_z_targetem
+    </a>
+  </div>
+
+  <div class="footer">
+    Stworzone z ❤️ przez <a href="https://instagram.com/angielski_z_targetem" target="_blank">@angielski_z_targetem</a>
+  </div>
+
+</div>
+
+<script>
+  const MAILER_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMTE2ZWRhMzU5MzljOGM0YWJmMTA0YjQ2YzliZWE0YTRhNTYwNWQ5NjBiMjA3MDI5MGY2OGM3YTlkNmE4NTYzMjY2ODRkZWYxZjhhNWViMjgiLCJpYXQiOjE3Nzg4MTQ1NDQuNzk5MDMzLCJuYmYiOjE3Nzg4MTQ1NDQuNzk5MDM2LCJleHAiOjQ5MzQ0ODgxNDQuNzk0MDExLCJzdWIiOiI1MTM4MjUiLCJzY29wZXMiOltdfQ.PwpdmABVRuR960b-T9mdnwE2-FmjeMXiqWUiBewUKgaNjQhSo91vEOK4vcSNdMGXsJg2duP-m2DK177cRTPOAyN9iy0Ird3ugl-2AqdiUS26p_OgHRaMaUdezSWDvb57D3xJ2H8NQY_yfMdJQCTUvRptTZnO-AveMH6Zb-y6eN3ifUdkUSwD5ijzHGTJDGskpz_wPcpuY-TCqJ6QW3RRykGPr8LIlUmjc6vmYfvXM6aAqRsoFHHOqWb9llScP4s0U6FC2uPBgAsTZzLKo5slYKmpW2rfGtRePvDNYbfSd6nHbUOHLexIOTTKst-ATrYqyjXZSraDlrbH7Q_B5XrUbU_ZpTcllbzXNFfS9s6aHlIoBSh9GC4lFYTIROg28KFBnSbbr4y0CkEaxMMLyzoqIG5vAaQwdk_d3I7fJfiZ7UrmO9TlWzlsVxWPQ28w8t0ArD7ExtXp53r6FJlisMEz_fxk74MZvyoINUXTk7WI6Ql-uoQeqyfUuwwq7OyMi9Lrp0KDlmsfS4nuRkKr8u8RIQrGJTfziwqtGmyVT_qmFYZY64HpI0ro2xpzc8duA19dak5N87yLQ8zIbdmNEqKbKh3bE69lqSj7D-GLXqQVYC4MNqaRy5rtnX7zRN1DCz192UlvS1QYw2udB8Ba_dSiZ06NIyC_QYmqLmDBwE_8SBY';
+
+  const SYSTEM_PROMPT = `Jesteś Karolą — ciepłą, turbo zadaniową asystentką do nauki angielskiego, stworzoną przez szkołę językową Target (@angielski_z_targetem).
+
+Twoja filozofia jest głęboko zakorzeniona w "Atomowych nawykach" Jamesa Cleara — wierzysz w małe, konkretne kroki, tożsamość opartą na działaniu i usuwanie barier zamiast dodawania presji.
+
+ZAWSZE odpowiadasz w dokładnie trzech sekcjach, używając tych emoji jako nagłówków:
+
+💛 WSPARCIE + ROZWIĄZANIE
+Odpowiedz z ciepłem i zrozumieniem, bez oceniania. Daj konkretne rozwiązanie zainspirowane Atomowymi nawykami (miniaturyzacja zadania, efekt 2 minut, budowanie tożsamości "osoby, która uczy się angielskiego"). Użyj słownictwa i tonu charakterystycznego dla podejścia Target — bliskiego, motywującego, prawdziwego.
+
+✨ TWOJE ZADANIE NA DZIŚ
+Daj JEDEN mały, natychmiastowy krok do wykonania — tak prosty, że niemożliwy do olania. Sformułuj go ciepło. Zadanie ma dać poczucie sprawczości i małego zwycięstwa jeszcze dziś. Nie lista — tylko jeden konkret.
+
+🇬🇧 POMOCNA ANGIELSKA PIGUŁKA
+Jeśli pytanie dotyczy konkretnego problemu językowego — pomóż bezpośrednio. Jeśli ogólne — daj jeden przydatny zwrot lub zdanie związane z ich sytuacją, które mogą użyć od razu. Format: podaj zwrot po angielsku + tłumaczenie + jedno zdanie przykładowe.
+
+WAŻNE:
+- Pisz po polsku, naturalnie wplatając angielskie zwroty i przykłady
+- Ton: ciepły, bezpośredni, jak przyjaciółka która zna się na angielskim
+- Nie bądź korporacyjna, nie bądź sucha
+- Każda odpowiedź powinna być konkretna i stosunkowo zwięzła
+- Mów "Ty" do użytkownika`;
+
+  let conversationHistory = [];
+  let hasResponded = false;
+
+  function fillChip(el) {
+    document.getElementById('userInput').value = el.textContent;
+    document.getElementById('userInput').focus();
+    document.getElementById('suggestions').style.opacity = '0.4';
+  }
+
+  function addMessage(role, html) {
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = `msg ${role === 'assistant' ? 'karola' : 'user'}`;
+
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'msg-avatar';
+    avatarDiv.textContent = role === 'assistant' ? 'K' : 'Ty';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = html;
+
+    div.appendChild(avatarDiv);
+    div.appendChild(bubble);
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function showTyping() {
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg karola';
+    div.id = 'typingIndicator';
+    div.innerHTML = `
+      <div class="msg-avatar">K</div>
+      <div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+  }
+
+  function formatResponse(text) {
+    text = text.replace(/💛\s*WSPARCIE\s*\+\s*ROZWIĄZANIE/g, '<br><strong style="color:#C45A38;font-size:15px">💛 WSPARCIE + ROZWIĄZANIE</strong>');
+    text = text.replace(/✨\s*TWOJE\s*ZADANIE\s*NA\s*DZIŚ/g, '<br><br><strong style="color:#C45A38;font-size:15px">✨ TWOJE ZADANIE NA DZIŚ</strong>');
+    text = text.replace(/🇬🇧\s*POMOCNA\s*ANGIELSKA\s*PIGUŁKA/g, '<br><br><strong style="color:#C45A38;font-size:15px">🇬🇧 ANGIELSKA PIGUŁKA</strong>');
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    text = text.replace(/\n/g, '<br>');
+    return text;
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const userText = input.value.trim();
+    if (!userText) return;
+
+    addMessage('user', userText);
+    conversationHistory.push({ role: 'user', content: userText });
+    input.value = '';
+    input.style.height = 'auto';
+    sendBtn.disabled = true;
+    document.getElementById('suggestions').style.display = 'none';
+
+    showTyping();
+
+    try {
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: SYSTEM_PROMPT,
+          messages: conversationHistory
+        })
+      });
+
+      const data = await response.json();
+      const assistantText = data.content?.[0]?.text || 'Przepraszam, coś poszło nie tak. Spróbuj jeszcze raz 🙏';
+
+      removeTyping();
+      conversationHistory.push({ role: 'assistant', content: assistantText });
+      addMessage('assistant', formatResponse(assistantText));
+
+      if (!hasResponded) {
+        hasResponded = true;
+        setTimeout(() => {
+          document.getElementById('emailSection').classList.add('visible');
+          document.getElementById('resetBtn').style.display = 'inline-block';
+        }, 800);
+      }
+
+    } catch (err) {
+      removeTyping();
+      addMessage('assistant', 'Ups, coś poszło nie tak. Spróbuj jeszcze raz 🙏');
+    }
+
+    sendBtn.disabled = false;
+    input.focus();
+  }
+
+  async function submitEmail() {
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const btn = document.getElementById('emailBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Zapisuję...';
+
+    try {
+      const subRes = await fetch('https://connect.mailerlite.com/api/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${MAILER_API_KEY}`
+        },
+        body: JSON.stringify({ email, fields: { name } })
+      });
+
+      const subData = await subRes.json();
+      const subscriberId = subData?.data?.id;
+
+      if (subscriberId) {
+        const groupsRes = await fetch('https://connect.mailerlite.com/api/groups?filter[name]=akrowa+asystentka', {
+          headers: { 'Authorization': `Bearer ${MAILER_API_KEY}` }
+        });
+        const groupsData = await groupsRes.json();
+        const group = groupsData?.data?.[0];
+
+        if (group) {
+          await fetch(`https://connect.mailerlite.com/api/subscribers/${subscriberId}/groups/${group.id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${MAILER_API_KEY}`
+            }
+          });
+        }
+      }
+
+      successMsg.style.display = 'block';
+      btn.textContent = '✓ Zapisano!';
+
+      setTimeout(() => {
+        document.getElementById('ctaSection').classList.add('visible');
+        document.getElementById('ctaSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 1200);
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = '✉️ Dołącz do listy Karoli!';
+      errorMsg.textContent = 'Coś poszło nie tak. Spróbuj jeszcze raz.';
+      errorMsg.style.display = 'block';
+    }
+  }
+
+  function resetChat() {
+    conversationHistory = [];
+    hasResponded = false;
+    document.getElementById('messages').innerHTML = `
+      <div class="msg karola">
+        <div class="msg-avatar">K</div>
+        <div class="msg-bubble">
+          Cześć! Jestem <strong>Karola</strong> — Twoja asystentka angielskiego 🙋‍♀️<br><br>
+          Napisz mi, co Cię blokuje, czego się boisz albo czego po prostu nie możesz ogarnąć z angielskim. Bez oceniania, obiecuję.
+          <span class="eng-example">✦ "Every expert was once a beginner." — Pamiętaj o tym!</span>
+        </div>
+      </div>`;
+    document.getElementById('emailSection').classList.remove('visible');
+    document.getElementById('ctaSection').classList.remove('visible');
+    document.getElementById('suggestions').style.display = 'block';
+    document.getElementById('suggestions').style.opacity = '1';
+    document.getElementById('resetBtn').style.display = 'none';
+    document.getElementById('nameInput').value = '';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('emailBtn').disabled = false;
+    document.getElementById('emailBtn').textContent = '✉️ Dołącz do listy Karoli!';
+    document.getElementById('successMsg').style.display = 'none';
+    document.getElementById('errorMsg').style.display = 'none';
+  }
+
+  document.getElementById('userInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  document.getElementById('userInput').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+</script>
+</body>
+</html>
